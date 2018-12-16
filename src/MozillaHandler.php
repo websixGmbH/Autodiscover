@@ -13,7 +13,7 @@ class MozillaHandler extends RequestHandler
     public function writeResponse($config, $request)
     {
         header("Content-Type: text/xml");
-        $writer = new XMLWriter();
+        $writer = new \XMLWriter();
         $writer->openURI("php://output");
 
         $this->writeXml($writer, $config, $request);

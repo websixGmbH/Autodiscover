@@ -14,7 +14,7 @@ class OutlookHandler extends RequestHandler {
     public function writeResponse($config, $request) {
         header("Content-Type: application/xml");
 
-        $writer = new XMLWriter();
+        $writer = new \XMLWriter();
         $writer->openMemory();
 
         $this->writeXml($writer, $config, $request);
