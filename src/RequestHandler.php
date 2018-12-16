@@ -11,6 +11,16 @@ namespace websixGmbh\Autodiscover;
 
 abstract class RequestHandler
 {
+
+    private $config = null;
+
+
+    public function __construct(Configuration $config)
+    {
+        $this->config = $config;
+    }
+
+
     public function handleRequest()
     {
         $request = $this->parseRequest();
@@ -25,6 +35,7 @@ abstract class RequestHandler
 
     protected function expandRequest($request)
     {
+
         list($localpart, $domain) = explode('@', $request->email);
 
         if (!isset($request->localpart)) {
@@ -45,34 +56,12 @@ abstract class RequestHandler
             return $cachedConfig;
         }
 
-        $cachedConfig = $this->readConfig($request);
+        $cachedConfig = $this->config;
         $cachedEmail = $request->email;
 
         return $cachedConfig->getDomainConfig($request->domain);
     }
 
-    protected function readConfig($vars)
-    {
-        foreach ($vars as $var => $value) {
-            $$var = $value;
-        }
-
-        $config = new Configuration();
-        $cfg = $config->add('autoconf.de.test');
-        $cfg->name = 'Example mail services';
-        $cfg->nameShort = 'Example';
-        $cfg->domains = [ 'autoconf.de.test', 'example.org' ];
-        $cfg->username = $_GET['emailaddress'];//new AliasesFileUsernameResolver("/etc/mail/domains/$domain/aliases");
-
-        $cfg->addServer('imap', 'mail.autoconf.de.test')
-            ->withEndpoint('STARTTLS')
-            ->withEndpoint('SSL');
-
-        $cfg->addServer('smtp', 'smtp.autoconf.de.test')
-            ->withEndpoint('STARTTLS')
-            ->withEndpoint('SSL');
-        return $config;
-    }
 
     protected function getUsername($server, $request)
     {

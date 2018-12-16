@@ -23,12 +23,13 @@ class Configuration
 
     public function getDomainConfig($domain)
     {
+
         foreach ($this->items as $domainConfig) {
             if (in_array($domain, $domainConfig->domains)) {
                 return $domainConfig;
             }
         }
 
-        throw new Exception('No configuration found for requested domain.');
+        throw new \Exception('No configuration found for requested domain.');
     }
 }
