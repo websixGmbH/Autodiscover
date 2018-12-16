@@ -14,26 +14,24 @@ class DomainConfiguration
     public $domains;
     public $servers = array();
     public $username;
-    public $defaultPort;
-    public $defaultSslPort;
 
-    public function addServer($type, $hostname, $defaulPort = null, $defaultSslPort = null)
+    public function addServer($type, $hostname)
     {
-        $server = $this->createServer($type, $hostname, $defaulPort, $defaultSslPort);
+        $server = $this->createServer($type, $hostname);
         $server->username = $this->username;
         array_push($this->servers, $server);
         return $server;
     }
 
-    private function createServer($type, $hostname, $defaultPort, $defaultSslPort)
+    private function createServer($type, $hostname)
     {
         switch ($type) {
             case 'imap':
-                return new Server($type, $hostname, !is_null($defaultPort) ? $defaultPort : 143, !is_null($defaultSslPort) ? $defaultSslPort : 993);
+                return new Server($type, $hostname, 143, 993);
             case 'pop3':
-                return new Server($type, $hostname, !is_null($defaultPort) ? $defaultPort : 110, !is_null($defaultSslPort) ? $defaultSslPort : 995);
+                return new Server($type, $hostname, 110, 995);
             case 'smtp':
-                return new Server($type, $hostname, !is_null($defaultPort) ? $defaultPort : 25, !is_null($defaultSslPort) ? $defaultSslPort : 465);
+                return new Server($type, $hostname, 25, 465);
             default:
                 throw new Exception("Unrecognized server type \"$type\"");
         }
