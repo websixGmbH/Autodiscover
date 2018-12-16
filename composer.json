@@ -1,6 +1,7 @@
 {
   "name": "websixgmbh/autodiscover",
   "type": "library",
+  "version": "0.0.1",
   "license": "MIT",
   "authors": [
     {
