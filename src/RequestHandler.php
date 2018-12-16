@@ -58,7 +58,19 @@ abstract class RequestHandler
         }
 
         $config = new Configuration();
-        include './autoconfig.settings.php';
+        $cfg = $config->add('autoconf.de.test');
+        $cfg->name = 'Example mail services';
+        $cfg->nameShort = 'Example';
+        $cfg->domains = [ 'autoconf.de.test', 'example.org' ];
+        $cfg->username = $_GET['emailaddress'];//new AliasesFileUsernameResolver("/etc/mail/domains/$domain/aliases");
+
+        $cfg->addServer('imap', 'mail.autoconf.de.test')
+            ->withEndpoint('STARTTLS')
+            ->withEndpoint('SSL');
+
+        $cfg->addServer('smtp', 'smtp.autoconf.de.test')
+            ->withEndpoint('STARTTLS')
+            ->withEndpoint('SSL');
         return $config;
     }
 
